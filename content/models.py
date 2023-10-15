@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class Content(models.Model):
+    file = models.FileField(upload_to="contents/")

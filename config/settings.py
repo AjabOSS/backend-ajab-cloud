@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     
+    'branch',
+    'content',
+    'myuser',
     
 ]
 
@@ -88,10 +91,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {    
     #local:
-    # 'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': BASE_DIR / 'db.sqlite3',}
+    'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': BASE_DIR / 'data/db.sqlite3',}
 
     # postgres public:
-    'default': {'ENGINE': 'django.db.backends.postgresql','NAME': os.getenv("PUBLIC_NAME"),'USER': os.getenv("PUBLIC_USER"),'PASSWORD': os.getenv("PUBLIC_PASSWORD"),'HOST': os.getenv("PUBLIC_HOST"),'PORT': os.getenv("PUBLIC_PORT")}
+    # 'default': {'ENGINE': 'django.db.backends.postgresql','NAME': os.getenv("PUBLIC_NAME"),'USER': os.getenv("PUBLIC_USER"),'PASSWORD': os.getenv("PUBLIC_PASSWORD"),'HOST': os.getenv("PUBLIC_HOST"),'PORT': os.getenv("PUBLIC_PORT")}
 }
 
 
@@ -129,10 +132,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'myuser.MyUser'
 
 
 #  ██████╗ ██████╗      ██╗███████╗ ██████╗████████╗    ███████╗████████╗ ██████╗ ██████╗  █████╗  ██████╗ ███████╗
@@ -143,11 +151,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #  ╚═════╝ ╚═════╝  ╚════╝ ╚══════╝ ╚═════╝   ╚═╝       ╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
                                                                                                                  
 
-STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
-AWS_S3_ENDPOINT_URL = os.getenv("LIARA_ENDPOINT")
-AWS_S3_ACCESS_KEY_ID = os.getenv("LIARA_ACCESS_KEY")
-AWS_S3_SECRET_ACCESS_KEY = os.getenv("LIARA_SECRET_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("LIARA_BUCKET_NAME")
+# STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
+# AWS_S3_ENDPOINT_URL = os.getenv("LIARA_ENDPOINT")
+# AWS_S3_ACCESS_KEY_ID = os.getenv("LIARA_ACCESS_KEY")
+# AWS_S3_SECRET_ACCESS_KEY = os.getenv("LIARA_SECRET_KEY")
+# AWS_STORAGE_BUCKET_NAME = os.getenv("LIARA_BUCKET_NAME")
 
 # ██████╗ ███████╗███████╗████████╗
 # ██╔══██╗██╔════╝██╔════╝╚══██╔══╝
