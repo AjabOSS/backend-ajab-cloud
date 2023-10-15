@@ -8,12 +8,15 @@ from django.contrib.auth.models import AbstractUser
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, username, password=None):
+    def create_user(self, username, email, password=None):
         if not username:
-            raise ValueError("You have to import username")
+            raise ValueError("You have to import Username")
+        if not email:
+            raise ValueError("You have to import Email")
 
         user = self.model(
             username = username,
+            email = email,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -22,9 +25,10 @@ class MyUserManager(BaseUserManager):
 
 
 
-    def create_superuser(self,  username, first_name="", last_name="", password=None):
+    def create_superuser(self,  username, email, first_name="", last_name="", password=None):
         user = self.create_user(
             username = username,
+            email = email,
             # first_name = first_name,
             # last_name = last_name,
         )
@@ -49,10 +53,12 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     
     # username = models.CharField(max_length=50, unique=True)
     username = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(max_length=254, unique=True)
+
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
-    first_name = models.CharField(max_length=50, blank=True, null=True)
-    last_name = models.CharField(max_length=50, blank=True, null=True)
+    first_name = models.CharField(max_length=50, blank=False)
+    last_name = models.CharField(max_length=50, blank=True)
 
 
 
@@ -66,17 +72,16 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     is_male = models.BooleanField(default=False) # Just for fun
     
     
-    email = models.EmailField(max_length=254)
-    ip = models.CharField(max_length=50)
+    ip = models.CharField(max_length=50, blank=True)
     # ip = models.GenericIPAddressField(protocol="both", unpack_ipv4=False)
-    profile_image = models.FileField(upload_to=None, max_length=100)
-    bio = models.TextField()
-    college = models.CharField(max_length=50)
-    college_entry = models.DateTimeField(auto_now=True)
+    profile_image = models.FileField(upload_to=None, max_length=100, blank=True)
+    bio = models.TextField(blank=True)
+    college = models.CharField(max_length=100, blank=True)
+    college_entry = models.DateTimeField(auto_now=False, blank=True )
     rank = models.PositiveIntegerField(default=1)
-    saved_branchs = models.ManyToManyField("branch.Branch", related_name="saved_branch")
-    viewed_branches = models.ManyToManyField("branch.Branch", related_name="viewed_branches")
-    created_branches = models.ManyToManyField("branch.Branch", related_name="created_branches")
+    saved_branchs = models.ManyToManyField("branch.Branch", related_name="saved_branch", blank=True)
+    viewed_branches = models.ManyToManyField("branch.Branch", related_name="viewed_branches", blank=True)
+    created_branches = models.ManyToManyField("branch.Branch", related_name="created_branches", blank=True)
     
     
     
@@ -95,7 +100,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     objects = MyUserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email', 'first_name']
 
     def __str__(self):
         return self.username
