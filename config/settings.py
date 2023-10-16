@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'branch',
     'content',
     'myuser',
+    'account',
     
 ]
 

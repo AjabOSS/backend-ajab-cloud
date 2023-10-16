@@ -77,7 +77,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     profile_image = models.FileField(upload_to=None, max_length=100, blank=True)
     bio = models.TextField(blank=True)
     college = models.CharField(max_length=100, blank=True)
-    college_entry = models.DateTimeField(auto_now=False, blank=True )
+    college_entry = models.DateTimeField(auto_now=False, blank=True, null=True)
     rank = models.PositiveIntegerField(default=1)
     saved_branchs = models.ManyToManyField("branch.Branch", related_name="saved_branch", blank=True)
     viewed_branches = models.ManyToManyField("branch.Branch", related_name="viewed_branches", blank=True)
