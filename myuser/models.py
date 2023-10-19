@@ -3,8 +3,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.hashers import make_password
 
-
+from uuid import uuid4
+from .utils import create_new_ref_number
+from random import randint
 
 
 class MyUserManager(BaseUserManager):
@@ -17,8 +20,10 @@ class MyUserManager(BaseUserManager):
         user = self.model(
             username = username,
             email = email,
+            is_active = True,
+            
         )
-        user.set_password(password)
+        user.set_password(make_password(password))
         user.save(using=self._db)
         return user
 
@@ -113,3 +118,15 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+    
+    
+class EmailConfirmationToken(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # code = models.IntegerField(default=randint(100000, 999999))
+    code = models.CharField(max_length=6, default=create_new_ref_number())
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.id) + " " + str(self.code) + " " + str(self.user) 
+    
