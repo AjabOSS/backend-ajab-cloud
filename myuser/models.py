@@ -43,7 +43,7 @@ class MyUserManager(BaseUserManager):
         user.is_staff = True
         user.is_online = True
         user.is_verifyed  = True
-        user.is_email_verifyed = True
+        user.is_email_verified = True
         user.is_onboarded = True
         
         user.set_password(password)
@@ -70,8 +70,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
-    is_verifyed  = models.BooleanField(default=False)
-    is_email_verifyed = models.BooleanField(default=False)
+    is_verified  = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
     is_onboarded = models.BooleanField(default=False)
     is_male = models.BooleanField(default=False) # Just for fun
     

@@ -36,5 +36,5 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key,
             'user_id': user.pk,
             'email': user.email,
-            'is_email_verifyed': user.is_email_verifyed
+            'is_email_verified': user.is_email_verified
         })
