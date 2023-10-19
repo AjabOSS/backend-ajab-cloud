@@ -11,7 +11,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = MyUser
         fields = (
             'email',
-            'first_name',
+            'name',
             'username',
             'password',
             'password2',
@@ -24,7 +24,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=MyUser.objects.all(),
-                fields=['email']
+                fields=['email', 'name']
             )
         ]
         

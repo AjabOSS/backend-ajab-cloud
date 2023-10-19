@@ -52,13 +52,12 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser, PermissionsMixin):
     
     # username = models.CharField(max_length=50, unique=True)
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=50)
     email = models.EmailField(max_length=254, unique=True)
 
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
-    first_name = models.CharField(max_length=50, blank=False)
-    last_name = models.CharField(max_length=50, blank=True)
+    name = models.CharField(max_length=50, blank=False)
 
 
 
@@ -99,8 +98,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'first_name']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.username

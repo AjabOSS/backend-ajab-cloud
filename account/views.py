@@ -13,7 +13,7 @@ from .serializers import *
 class UserRegisterAPI(APIView):
     permission_classes = [AllowAny,]
     def post(self, request):
-        ser_data = UserRegisterSerializer(data=request.POST)
+        ser_data = UserRegisterSerializer(data=request.data)
         if ser_data.is_valid():
             user = ser_data.create(ser_data.validated_data)
             token = Token.objects.create(user=user)
