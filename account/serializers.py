@@ -5,7 +5,7 @@ from myuser.models import MyUser
 
     
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(write_only=True, required=True)
+    password_confirm = serializers.CharField(write_only=True, required=True)
     
     class Meta:
         model = MyUser
@@ -14,7 +14,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             'name',
             'username',
             'password',
-            'password2',
+            'password_confirm',
             )
         
         extra_kwargs = {
@@ -29,7 +29,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         ]
         
     def create(self, validated_data):
-        del validated_data['password2']
+        del validated_data['password_confirm']
         return MyUser.objects.create(**validated_data)
 
 
@@ -46,6 +46,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     
     
     def validate(self, data):
-        if data['password'] != data['password2']:
+        if data['password'] != data['password_confirm']:
             raise serializers.ValidationError('password mismatch')
         return data
