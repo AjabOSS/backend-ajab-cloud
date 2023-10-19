@@ -52,7 +52,7 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser, PermissionsMixin):
     
     # username = models.CharField(max_length=50, unique=True)
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=254, unique=True)
 
     date_joined = models.DateTimeField(auto_now_add=True)
