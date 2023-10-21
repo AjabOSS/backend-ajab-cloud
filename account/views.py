@@ -1,16 +1,57 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 
-from myuser.models import EmailConfirmationToken
+from myuser.models import EmailConfirmationToken, MyUser
 from .serializers import *
+from .utils import send_verification_email
 
+class SendVerificationEmailAPI(APIView):
+    permission_classes = [IsAuthenticated,]
+    def post(self, request):
+        if request.user.is_email_verified == False:
+            send_verification_email(request.user)
+            return Response({"response": "success"}, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response({"response": "failed email alredy verifyed"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            
+class EmailCodeVerificationAPI(APIView):
+    permission_classes = [IsAuthenticated,]
+    def post(self, request):
+        user = request.user
+        code = request.data['code']
+        email_verify_object = EmailConfirmationToken.objects.filter(user=user)
+        
+        
+        if len(email_verify_object) == 1:
+            # print(str(code), " ",  str(email_verify_object[0].code))
+            if str(code) == str(email_verify_object[0].code):
+                user_obj = MyUser.objects.get(id=user.id)
+                user_obj.is_email_verified = True
+                user_obj.save()
+                status_code = status.HTTP_202_ACCEPTED
+                response = "email verification successful"
+            else:
+                status_code = status.HTTP_406_NOT_ACCEPTABLE
+                response = "code not valid"
+                
 
+        elif len(email_verify_object) == 0:
+            response = ("no email verification detected")
+        else:
+            response = "internal error"
+            
+        return Response({
+            "code":code,
+            "response":response
+            }, status=status_code)
+    
+    
 class UserRegisterAPI(APIView):
     permission_classes = [AllowAny,]
     def post(self, request):
@@ -18,7 +59,6 @@ class UserRegisterAPI(APIView):
         if ser_data.is_valid():
             user = ser_data.create(ser_data.validated_data)
             token = Token.objects.create(user=user)
-            EmailConfirmationToken.objects.create(user=user)
             sd = dict(ser_data.data)
             sd['token'] = str(token)
             return Response(sd, status=status.HTTP_201_CREATED)
@@ -38,3 +78,4 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email,
             'is_email_verified': user.is_email_verified
         })
+        

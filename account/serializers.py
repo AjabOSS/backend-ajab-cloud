@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
     
 from myuser.models import MyUser
 
+
     
 class UserRegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=True)
@@ -98,3 +99,6 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+    
+    
+    

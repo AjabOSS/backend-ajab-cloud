@@ -5,6 +5,9 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.hashers import make_password
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from uuid import uuid4
 from .utils import create_new_ref_number
 from random import randint
@@ -56,7 +59,6 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
     
-    # username = models.CharField(max_length=50, unique=True)
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=254, unique=True)
 
@@ -126,7 +128,15 @@ class EmailConfirmationToken(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # code = models.IntegerField(default=randint(100000, 999999))
     code = models.CharField(max_length=6, default=create_new_ref_number())
-    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    
     def __str__(self):
         return str(self.id) + " " + str(self.code) + " " + str(self.user) 
+
     
+
+# @receiver(post_save, sender=MyUser)
+# def print_only_after_deal_created(sender, instance, created, **kwargs):
+#     if created:
+        # EmailConfirmationToken.objects.create(user=instance)
+        # print(f'New deal with pk: {instance.pk} was created.')
