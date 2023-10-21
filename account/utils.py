@@ -9,6 +9,8 @@ def send_verification_email(user):
         for i in evt_obj_to_delete:
             i.delete()
     evt_obj = EmailConfirmationToken.objects.create(user=user)
+    if settings.DEBUG:
+        print(f"-- email confirmation code for {user.email} : {evt_obj.code}")
     msg = f"""
     کد تایید شما برای تایید ایمیل در عجب کلود :
     
