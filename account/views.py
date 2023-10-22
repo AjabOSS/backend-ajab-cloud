@@ -67,6 +67,7 @@ class UserRegisterAPI(APIView):
 
 
 class CustomAuthToken(ObtainAuthToken):
+    permission_classes = [AllowAny,]
     def post(self, request, *args, **kwargs):
         serializer = CustomAuthTokenSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -76,6 +77,12 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key,
             'user_id': user.pk,
             'email': user.email,
+            'username': user.username,
+            'name': user.name,
+            'profile_image': user.profile_image,
+            'is_onboarded': user.is_onboarded,
             'is_email_verified': user.is_email_verified
         })
-        
+    
+    
+    
