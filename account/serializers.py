@@ -9,7 +9,23 @@ from django.utils.translation import gettext_lazy as _
 from myuser.models import MyUser
 
 
+class EditUserProfileSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(write_only=True, required=False)
+    bio = serializers.CharField(write_only=True, required=False)
+    college = serializers.CharField(write_only=True, required=False)
+    profile_image = serializers.CharField(write_only=True, required=False)
     
+    class Meta:
+        model = MyUser
+        fields = (
+            "name",
+            "bio",
+            "college",
+            "profile_image",
+            # "college_entry",
+        )
+        
+        
 class UserRegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=True)
     

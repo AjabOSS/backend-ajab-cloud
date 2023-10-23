@@ -11,6 +11,17 @@ from myuser.models import EmailConfirmationToken, MyUser
 from .serializers import *
 from .utils import send_verification_email
 
+
+class EditUserProfileView(APIView):
+    permission_classes = [IsAuthenticated,]
+    def put(self, request):
+        user = request.user
+        srz_data = EditUserProfileSerializer(instance=user, data=request.data, partial=True)
+        if srz_data.is_valid():
+            srz_data.save()
+            return Response(srz_data.data, status=status.HTTP_200_OK)
+        return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class SendVerificationEmailAPI(APIView):
     permission_classes = [IsAuthenticated,]
     def post(self, request):
@@ -79,10 +90,8 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email,
             'username': user.username,
             'name': user.name,
-            'profile_image': user.profile_image,
+            # 'profile_image': user.profile_image,
             'is_onboarded': user.is_onboarded,
             'is_email_verified': user.is_email_verified
         })
-    
-    
     

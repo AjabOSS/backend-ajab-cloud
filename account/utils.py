@@ -25,11 +25,11 @@ def send_verification_email(user):
     اگر نمیدانید برای چه این کد را دریافت کردید 
     این پیام را نادیده بگیرید
     """
-    send_mail(
-        "کد تایید عجب کلود",
-        msg,
-        settings.EMAIL_HOST_USER,
-        [user.email,],
-        fail_silently=False,
-        )
+    # send_mail(
+    #     "کد تایید عجب کلود",
+    #     msg,
+    #     settings.EMAIL_HOST_USER,
+    #     [user.email,],
+    #     fail_silently=False,
+    #     )
 
