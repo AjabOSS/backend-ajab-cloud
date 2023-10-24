@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,6 +11,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from myuser.models import EmailConfirmationToken, MyUser
 from .serializers import *
 from .utils import send_verification_email
+import uuid 
 
 
 class EditUserProfileView(APIView):
@@ -31,13 +33,14 @@ class SendVerificationEmailAPI(APIView):
         else:
             return Response({"response": "failed email alredy verifyed"}, status=status.HTTP_406_NOT_ACCEPTABLE)
             
+            
+            
 class EmailCodeVerificationAPI(APIView):
     permission_classes = [IsAuthenticated,]
     def post(self, request):
         user = request.user
         code = request.data['code']
-        email_verify_object = EmailConfirmationToken.objects.filter(user=user)
-        
+        email_verify_object = EmailConfirmationToken.objects.filter(user=request.user)
         
         if len(email_verify_object) == 1:
             # print(str(code), " ",  str(email_verify_object[0].code))
