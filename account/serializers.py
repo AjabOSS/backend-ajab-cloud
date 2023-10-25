@@ -80,6 +80,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     
 
 class CustomAuthTokenSerializer(serializers.Serializer):
+    # image_url = serializers.SerializerMethodField('get_image_url')
+    
     email = serializers.CharField(
         label=_("email"),
         write_only=True

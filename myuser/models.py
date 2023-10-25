@@ -80,7 +80,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     
     ip = models.CharField(max_length=50, blank=True)
     # ip = models.GenericIPAddressField(protocol="both", unpack_ipv4=False)
-    profile_image = models.FileField(upload_to=None, max_length=100, blank=True)
+    profile_image = models.FileField(upload_to=f"images/users/", blank=True, default="media/static/default_profile_image.png")
     bio = models.TextField(blank=True)
     college = models.CharField(max_length=100, blank=True)
     college_entry = models.DateTimeField(auto_now=False, blank=True, null=True)

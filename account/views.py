@@ -93,7 +93,7 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email,
             'username': user.username,
             'name': user.name,
-            # 'profile_image': user.profile_image,
+            'profile_image': user.profile_image.url,
             'is_onboarded': user.is_onboarded,
             'is_email_verified': user.is_email_verified
         })
