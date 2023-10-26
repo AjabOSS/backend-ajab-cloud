@@ -13,6 +13,28 @@ from .serializers import *
 from .utils import send_verification_email
 import uuid 
 
+class WhoAmI(APIView):
+    permission_classes = [IsAuthenticated,]
+    def get(self, request):
+        user = request.user
+        me = {
+            "username":user.username,
+            "email":user.email,
+            "name":user.name,
+            "date_joined":user.date_joined,
+            "last_login":user.last_login,
+            "is_active":user.is_active,
+            "is_staff":user.is_staff,
+            "is_email_verified":user.is_email_verified,
+            "is_onboarded":user.is_onboarded,
+            "is_male":user.is_male,
+            "profile_image":user.profile_image.url,
+            "bio":user.bio,
+            "college":user.college,
+            "college_entry":user.college_entry,
+            "rank":user.rank
+        }
+        return Response(me, status=status.HTTP_200_OK)
 
 class EditUserProfileView(APIView):
     permission_classes = [IsAuthenticated,]
@@ -95,6 +117,15 @@ class CustomAuthToken(ObtainAuthToken):
             'name': user.name,
             'profile_image': user.profile_image.url,
             'is_onboarded': user.is_onboarded,
-            'is_email_verified': user.is_email_verified
+            'is_email_verified': user.is_email_verified,
+            "date_joined":user.date_joined,
+            "last_login":user.last_login,
+            "is_active":user.is_active,
+            "is_staff":user.is_staff,
+            "is_male":user.is_male,
+            "bio":user.bio,
+            "college":user.college,
+            "college_entry":user.college_entry,
+            "rank":user.rank
         })
     
