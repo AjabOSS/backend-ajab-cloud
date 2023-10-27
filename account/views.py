@@ -40,10 +40,10 @@ class EditUserProfileView(APIView):
     permission_classes = [IsAuthenticated,]
     def put(self, request):
         user = request.user
-        srz_data = EditUserProfileSerializer(instance=user, data=request.data, partial=True)
+        srz_data = EditUserProfileSerializer(instance=user, data=(request.data), partial=True)
         if srz_data.is_valid():
             srz_data.save()
-            return Response(srz_data.data, status=status.HTTP_200_OK)
+            return Response({"response":"success"}, status=status.HTTP_302_FOUND)
         return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SendVerificationEmailAPI(APIView):
