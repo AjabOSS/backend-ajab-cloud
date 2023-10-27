@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-*bub=uy6-%$t9hhlbgs45&vpb!kjk3^rk7bm^kyxda_lyqnyo_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LAST_API_VERSION = '1.0.0'
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
+    # 'drf_spectacular_sidecar',
     
     'branch',
     'content',
@@ -155,6 +157,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'myuser.MyUser'
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Ajab Cloud API',
+    'DESCRIPTION': 'api',
+    'VERSION': LAST_API_VERSION,
+    'SERVE_INCLUDE_SCHEMA': True,
+}
 
 #  ██████╗ ██████╗      ██╗███████╗ ██████╗████████╗    ███████╗████████╗ ██████╗ ██████╗  █████╗  ██████╗ ███████╗
 # ██╔═══██╗██╔══██╗     ██║██╔════╝██╔════╝╚══██╔══╝    ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██╔══██╗██╔════╝ ██╔════╝
@@ -180,6 +188,7 @@ AUTH_USER_MODEL = 'myuser.MyUser'
                                  
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # Permission's :
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
