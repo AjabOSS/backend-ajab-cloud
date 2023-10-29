@@ -13,11 +13,54 @@ from .serializers import *
 from .utils import send_verification_email
 import uuid 
 
+
+class GetUserById(APIView):
+    permission_classes = [AllowAny,]
+    def get(self, request, pk):
+        user = get_object_or_404(MyUser, id=pk)
+        if user.is_active:
+            me = {
+                "response":"success",
+                "username":user.username,
+                "name":user.name,
+                "date_joined":user.date_joined,
+                "is_staff":user.is_staff,
+                "profile_image":user.profile_image.url,
+                "bio":user.bio,
+                "college":user.college,
+                "college_entry":user.college_entry,
+                "rank":user.rank
+            }
+            return Response(me, status=status.HTTP_200_OK)
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+class GetUserByUsername(APIView):
+    permission_classes = [AllowAny,]
+    def get(self, request, username):
+        user = get_object_or_404(MyUser, username=username)
+        if user.is_active:
+            me = {
+                "response":"success",
+                "username":user.username,
+                "id":user.id,
+                "name":user.name,
+                "date_joined":user.date_joined,
+                "is_staff":user.is_staff,
+                "profile_image":user.profile_image.url,
+                "bio":user.bio,
+                "college":user.college,
+                "college_entry":user.college_entry,
+                "rank":user.rank
+            }
+            return Response(me, status=status.HTTP_200_OK)
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
 class WhoAmI(APIView):
     permission_classes = [IsAuthenticated,]
     def get(self, request):
         user = request.user
         me = {
+            "response":"success",
             "username":user.username,
             "email":user.email,
             "name":user.name,
@@ -110,6 +153,7 @@ class CustomAuthToken(ObtainAuthToken):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         return Response({
+            "response":"success",
             'token': token.key,
             'user_id': user.pk,
             'email': user.email,

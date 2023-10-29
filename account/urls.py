@@ -14,6 +14,8 @@ urlpatterns = [
     path("send-verification-email/", SendVerificationEmailAPI.as_view()),
     path("api-token-auth/", CustomAuthToken.as_view()),
     path("who-am-i/", WhoAmI.as_view()),
+    path("get-user-by-id/<int:pk>/", GetUserById.as_view()),
+    path("get-user-by-username/<str:username>/", GetUserByUsername.as_view()),
     
     
     

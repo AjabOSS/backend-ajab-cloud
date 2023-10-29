@@ -119,7 +119,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
 
     def __str__(self):
-        return self.username
+        return f"{self.username} , id:{self.id}"
     
     
     

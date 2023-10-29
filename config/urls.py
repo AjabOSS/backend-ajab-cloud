@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include("account.urls")),
     path('api/defualt-schema/', get_schema_view(title="Ajab Cloud",description="API for all things …",version=settings.LAST_API_VERSION), name='openapi-schema'),
+    path('api/branch/',include("branch.urls")),
     
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
