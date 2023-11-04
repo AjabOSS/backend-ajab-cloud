@@ -5,8 +5,7 @@ from django.conf import settings
 class Branch(models.Model):
     title = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
-    contents = models.ManyToManyField("content.Content", related_name="content")#!
-    
+
     up_voted_uesrs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="up_voted_uesr", blank=True)
     down_voted_uesrs = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="down_voted_uesr", blank=True)
     

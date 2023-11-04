@@ -81,6 +81,7 @@ class WhoAmI(APIView):
 
 class EditUserProfileView(APIView):
     permission_classes = [IsAuthenticated,]
+    serializer_class = EditUserProfileSerializer
     def put(self, request):
         user = request.user
         srz_data = EditUserProfileSerializer(instance=user, data=(request.data), partial=True)
@@ -133,6 +134,7 @@ class EmailCodeVerificationAPI(APIView):
     
 class UserRegisterAPI(APIView):
     permission_classes = [AllowAny,]
+    serializer_class = UserRegisterSerializer
     def post(self, request):
         ser_data = UserRegisterSerializer(data=request.data)
         if ser_data.is_valid():
