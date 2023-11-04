@@ -17,10 +17,9 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 
 
 class BranchCreateAPI(APIView):
-    permission_classes = (CustomPerm,)
-    # permission_classes = [AllowAny,]
-    # serializer_class = BranchSerializer
-    # @csrf_exempt
+    # permission_classes = (CustomPerm,)
+    permission_classes = [AllowAny,IsEmailVerified]
+    serializer_class = BranchSerializer
     def post(self, request):
         ser_data = BranchSerializer(data=request.data)
         if ser_data.is_valid():
