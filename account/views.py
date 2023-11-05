@@ -109,7 +109,7 @@ class EditUserProfileView(APIView):
                 "college_entry":user.college_entry,
                 "rank":user.rank
             }
-            return Response(me, status=status.HTTP_302_FOUND)
+            return Response(me, status=status.HTTP_202_ACCEPTED)
         return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SendVerificationEmailAPI(APIView):
