@@ -88,7 +88,9 @@ class EditUserProfileView(APIView):
         if srz_data.is_valid():
             srz_data.save()
             user = MyUser.objects.get(id=user.id)
-            
+            if not user.is_onboarded:
+                user.is_onboarded = True
+                user.save()
             me = {
                 "response":"success",
                 "username":user.username,
