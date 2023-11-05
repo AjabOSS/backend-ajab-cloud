@@ -87,7 +87,27 @@ class EditUserProfileView(APIView):
         srz_data = EditUserProfileSerializer(instance=user, data=(request.data), partial=True)
         if srz_data.is_valid():
             srz_data.save()
-            return Response({"response":"success"}, status=status.HTTP_302_FOUND)
+            user = MyUser.objects.get(id=user.id)
+            
+            me = {
+                "response":"success",
+                "username":user.username,
+                "email":user.email,
+                "name":user.name,
+                "date_joined":user.date_joined,
+                "last_login":user.last_login,
+                "is_active":user.is_active,
+                "is_staff":user.is_staff,
+                "is_email_verified":user.is_email_verified,
+                "is_onboarded":user.is_onboarded,
+                "is_male":user.is_male,
+                "profile_image":user.profile_image.url,
+                "bio":user.bio,
+                "college":user.college,
+                "college_entry":user.college_entry,
+                "rank":user.rank
+            }
+            return Response(me, status=status.HTTP_302_FOUND)
         return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SendVerificationEmailAPI(APIView):
