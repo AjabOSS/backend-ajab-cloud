@@ -13,7 +13,7 @@ class EditUserProfileSerializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True, required=False)
     bio = serializers.CharField(write_only=True, required=False)
     college = serializers.CharField(write_only=True, required=False)
-    profile_image = serializers.ImageField(required=True)
+    profile_image = serializers.ImageField(required=False)
     
     class Meta:
         model = MyUser
@@ -22,6 +22,7 @@ class EditUserProfileSerializer(serializers.ModelSerializer):
             "bio",
             "college",
             "profile_image",
+            "is_male",
             # "college_entry",
         )
         
